@@ -18,7 +18,16 @@ from openai.types.responses import ResponseTextDeltaEvent
 # ============================================================================
 
 dotenv.load_dotenv()
-gemini_api_key = os.getenv("GEMINI_API_KEY")
+# gemini_api_key = st.secrets.get(os.getenv("GEMINI_API_KEY"))
+
+
+gemini_api_key = st.secrets.get("GEMINI_API_KEY", None) or os.getenv("GEMINI_API_KEY")
+
+if not gemini_api_key:
+    st.error("GEMINI_API_KEY not found in Streamlit secrets or .env")
+    st.stop()
+
+
 
 # Disable tracing for performance optimization
 set_tracing_disabled(disabled=True)
